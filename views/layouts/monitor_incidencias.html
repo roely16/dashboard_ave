@@ -1,0 +1,33 @@
+<div id="app">
+
+	<div class="row">
+		<section class="tables col-lg-4" ng-repeat="incidente in incidentes" >
+			<div class="">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							
+							<div id="container-grafica">
+								<div id="grafica-incidente-{{ incidente.ID_GRAFICA }}" style="width:100%">
+									<canvas id="{{ incidente.ID_GRAFICA }}"></canvas>
+								</div>
+							</div>
+							
+
+							<br>
+
+							<div class="card-body">
+								<h5 class="card-title">{{ incidente.NOMBRE }}</h5>
+								<a ng-href="#/monitor_incidencias/{{ incidente.ID_INCIDENTE }}" class="card-link">Detalles</a>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+</div>
+
+

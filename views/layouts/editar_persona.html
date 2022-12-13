@@ -1,0 +1,420 @@
+<section class="tables" ng-init="moduloEditarPersona()">
+        <div class="">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+
+                         <div class="card-header d-flex align-items-center">
+                            <div class="col-lg-12">
+
+                                <ol class="breadcrumb" >
+                                    <li class="breadcrumb-item" ><a href="#/personas">Personas</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Editar Persona</li>
+                                  </ol>
+
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+						<form ng-submit="actualizarDatos()">
+                            <div class="row">
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input ng-disabled="!editar_datos" type="text" class="form-control" ng-model="persona_edit.NOMBRE" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Apellido</label>
+                                        <input ng-disabled="!editar_datos" type="text" class="form-control" ng-model="persona_edit.APELLIDO" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input ng-disabled="!editar_datos" type="text" class="form-control" ng-model="persona_edit.TELEFONO" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input ng-disabled="!editar_datos" type="email" ng-model="persona_edit.EMAIL" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>DPI</label>
+                                        <input ng-disabled="!editar_datos" type="text" ng-model="persona_edit.DPI" class="form-control">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Dependencia</label>
+                                        <select ng-disabled="!editar_datos" class="form-control" ng-model="persona_edit.ID_DEPENDENCIA">
+                                            <option value="">-- Seleccione una opción --</option>
+                                            <option ng-repeat="dependencia in dependencias" value="{{ dependencia.ID_DEPENDENCIA }}">{{ dependencia.NOMBRE }}</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Nivel</label>
+                                        <select ng-disabled="!editar_datos" ng-options="nivel.ID_NIVEL as nivel.DESCRIPCION for nivel in niveles_usuario" class="form-control" ng-model="persona_edit.ID_NIVEL">
+                                            <!-- <option value="{{ nivel.ID_NIVEL }}" ng-repeat="nivel in niveles_usuario">{{ nivel.DESCRIPCION }}</option> -->
+											<option value="">-- SELECCIONE UN NIVEL --</option>
+										</select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-lg-12 text-center">
+                                    <button type="submit" ng-if="editar_datos" class="btn btn-primary">
+                                        Guardar Cambios
+                                        <i class="fas fa-save"></i>
+                                    </button>
+
+									<button ng-if="!editar_datos" ng-click="editarDatos()" class="btn btn-info">
+                                        Editar Datos
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+						</form>
+                            <hr />
+
+                            <div class="row">
+
+								<div class="col-lg-12">
+									<ul class="nav nav-tabs" id="myTab" role="tablist">
+									  	<li class="nav-item">
+									    	<a style="cursor: pointer;" class="nav-link active" data-target="#mis_actividades" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">
+												Mis Comunidades
+												<i class="fas fa-users"></i>
+											</a>
+									  	</li>
+									  	<!-- <li class="nav-item">
+									    	<a style="cursor: pointer;" class="nav-link" data-target="#permisos" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">
+												Permisos
+												<i class="fas fa-key"></i>
+											</a>
+									  	</li> -->
+
+										<li class="nav-item">
+									    	<a style="cursor: pointer;" class="nav-link" data-target="#dispostivos" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">
+												Dispositivos
+												<i class="fas fa-mobile-alt"></i>
+											</a>
+									  	</li>
+									</ul>
+									<br>
+								</div>
+
+								<br>
+								<div class="col-lg-12">
+									<div class="tab-content" id="myTabContent">
+										<div class="tab-pane fade show active" id="mis_actividades" role="tabpanel" aria-labelledby="mis-actividades-tab">
+											<div class="row md-4">
+
+												<div class="col-lg-12">
+		                                            <button ng-click="modalComunidades()" class="btn btn-primary pull-left">
+		                                                Agregar
+		                                                <i class="fas fa-plus"></i>
+		                                            </button>
+		                                        </div>
+											</div>
+
+											<br>
+											<div class="row md-4" ng-show="persona_edit.COMUNIDADES.length > 0">
+												<div class="col-lg-12 md-4">
+													<table class="table table-sm">
+			                                            <thead>
+			                                                <tr>
+			                                                    <th style="width: 50%">Comunidad</th>
+																<th style="width: 40%">Rol</th>
+			                                                    <th style="width: 10%">Acción</th>
+			                                                </tr>
+			                                            </thead>
+			                                            <tbody>
+			                                                <tr ng-repeat="comunidad in persona_edit.COMUNIDADES">
+			                                                    <td>{{ comunidad.NOMBRE }}</td>
+																<td>{{ comunidad.ROL }}</td>
+			                                                    <td>
+																	<button ng-click="modalEditarPermisosComunidad(comunidad.ID, comunidad.ID_COMUNIDAD)" class="btn btn-primary btn-sm">
+			                                                            <i class="fas fa-edit"></i>
+			                                                        </button>
+
+			                                                        <button ng-click="eliminarPersonaComunidad(comunidad.ID)" class="btn btn-danger btn-sm">
+			                                                            <i class="fas fa-trash-alt"></i>
+			                                                        </button>
+
+			                                                    </td>
+			                                                </tr>
+			                                            </tbody>
+			                                        </table>
+												</div>
+											</div>
+
+											<div class="col-md-12" ng-show="persona_edit.COMUNIDADES.length == 0">
+				                                <h1 class="text-center">
+				                                    No se encontraron registros
+				                                    <i class="fas fa-search"></i>
+				                                </h1>
+				                            </div>
+
+										</div>
+
+										<div class="tab-pane fade" id="permisos" role="tabpanel" aria-labelledby="permisos-tab">
+											<h1>Prueba</h1>
+										</div>
+
+										<div class="tab-pane fade" id="dispostivos" role="tabpanel" aria-labelledby="permisos-tab">
+											<div class="row md-4">
+
+												<div class="col-lg-12">
+		                                            <button ng-click="modalComunidades()" class="btn btn-warning pull-left">
+		                                                Notificar Dispositivos
+		                                                <i class="fas fa-bell"></i>
+		                                            </button>
+		                                        </div>
+											</div>
+											<br>
+											<div class="row md-4" ng-show="persona_edit.DISPOSITIVOS.length > 0">
+												<div class="col-lg-12 md-4">
+													<table class="table table-sm">
+			                                            <thead>
+			                                                <tr>
+			                                                    <th style="width: 15%">Marca</th>
+																<th style="width: 15%">Modelo</th>
+																<th style="width: 20%">Versión OS</th>
+																<th style="width: 20%">Operador</th>
+																<th style="width: 20%">Versión APP</th>
+			                                                    <th style="width: 10%">Acción</th>
+			                                                </tr>
+			                                            </thead>
+			                                            <tbody>
+			                                                <tr ng-repeat="dispositivo in persona_edit.DISPOSITIVOS">
+			                                                    <td>{{ dispositivo.MARCA }}</td>
+																<td>{{ dispositivo.MODELO }}</td>
+																<td>{{ dispositivo.VERSION_OS }}</td>
+																<td>{{ dispositivo.OPERADOR }}</td>
+																<td>{{ dispositivo.VERSION_APP }}</td>
+			                                                    <td>
+			                                                        <button ng-click="eliminarDispositivo(dispositivo.DEVICE_ID)" class="btn btn-danger btn-sm">
+			                                                            <i class="fas fa-trash-alt"></i>
+			                                                        </button>
+
+																	<button ng-click="notificarDispositivo(dispositivo.DEVICE_ID)" class="btn btn-warning btn-sm">
+			                                                            <i class="fas fa-bell"></i>
+			                                                        </button>
+			                                                    </td>
+			                                                </tr>
+			                                            </tbody>
+			                                        </table>
+												</div>
+											</div>
+
+											<div class="col-md-12" ng-show="persona_edit.DISPOSITIVOS.length == 0">
+				                                <h1 class="text-center">
+				                                    No se encontraron registros
+				                                    <i class="fas fa-search"></i>
+				                                </h1>
+				                            </div>
+
+										</div>
+
+									</div>
+								</div>
+
+
+                                <div class="col-lg-6">
+
+                                    <div class="row mb-4">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<div class="modal fade bd-example-modal-lg" id="modalComunidades" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Comunidades Disponibles</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+				<form ng-submit="agregarComunidad()">
+                <div id="html2">
+
+                    <ul id="treeview">
+
+                        <li ng-repeat="segmento in segmentos_editar" id="li{{ segmento.ID_COMUNIDAD }}">
+
+                            <a id="{{ segmento.ID_COMUNIDAD }}" onclick="seleccionarElemento(this.id)">
+                                {{ segmento.NOMBRE }}
+                            </a>
+
+                            <ul ng-if="segmento.COMUNIDADES.length > 0">
+
+                                <li ng-repeat="comunidad in segmento.COMUNIDADES" id="li{{ comunidad.ID_COMUNIDAD }}">
+
+                                    <a id="{{ comunidad.ID_COMUNIDAD }}" onclick="seleccionarElemento(this.id)">
+                                        {{ comunidad.NOMBRE }}
+                                    </a>
+
+                                    <ul ng-if="comunidad.COMUNIDADES.length > 0">
+
+                                        <li ng-repeat="comunidad2 in comunidad.COMUNIDADES" id="li{{ comunidad2.ID_COMUNIDAD }}">
+
+                                            <a id="{{ comunidad2.ID_COMUNIDAD }}" onclick="seleccionarElemento(this.id)">
+                                                {{ comunidad2.NOMBRE }}
+                                            </a>
+
+											<!-- Buscar comunidades -->
+											<ul ng-if="comunidad2.COMUNIDADES.length > 0">
+												<li ng-repeat="comunidad3 in comunidad2.COMUNIDADES">
+
+													<a id="{{ comunidad3.ID_COMUNIDAD }}" ng-click="seleccionarLista(comunidad3.ID_COMUNIDAD, comunidad3.DEPENDE)" onclick="seleccionarElemento(this.id)">
+														{{ comunidad3.NOMBRE }}
+													</a>
+
+													<!-- Buscar comunidades -->
+													<ul ng-if="comunidad3.COMUNIDADES.length > 0" >
+														<li ng-repeat="comunidad4 in comunidad3.COMUNIDADES">
+															<a id="{{ comunidad4.ID_COMUNIDAD }}" ng-click="seleccionarLista(comunidad4.ID_COMUNIDAD, comunidad4.DEPENDE)" onclick="seleccionarElemento(this.id)">
+																{{ comunidad4.NOMBRE }}
+															</a>
+														</li>
+													</ul>
+
+												</li>
+											</ul>
+
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+				<br>
+
+				<div class="row">
+					<!-- <div class="col-lg-4">
+						<h3>Permisos</h3>
+						<div class="form-check" ng-repeat="permiso in permisos">
+						  	<input class="form-check-input" type="checkbox" value="{{ permiso.value }}" ng-model="permiso.selected" name="selectedPermisos[]">
+						  	<label class="form-check-label">
+						    	{{ permiso.text }}
+						  	</label>
+						</div>
+					</div> -->
+
+					<div class="col-lg-8">
+
+						<div class="form-group">
+						    <label for="exampleFormControlSelect1"><h3>Rol</h3></label>
+						    <select ng-model="rol_comunidad" class="form-control" ng-options="rol.ID_ROL as rol.NOMBRE for rol in roles_comunidad" required>
+								<option value="">SELECCIONE UN ROL</option>
+						    </select>
+						</div>
+					</div>
+
+				</div>
+
+				<br>
+
+                <div class="row">
+
+                    <div class="col-lg-12 text-center">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            Agregar a Comunidad
+                        </button>
+						<button class="btn btn-secondary btn-lg" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                    </div>
+
+                </div>
+				</form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para permisos -->
+<div class="modal fade bd-example-modal-sm" id="modalPermisosComunidad" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+			<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Permisos y Rol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+			<div class="modal-body">
+				<form ng-submit="actualizarRolPermisos()">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+						    <label>
+								<strong>Rol</strong>
+							</label>
+						    <select ng-model="comunidad_persona.ID_ROL" ng-options="rol.ID_ROL as rol.NOMBRE for rol in comunidad_persona.ROLES" class="form-control" required>
+						      	<option value="">-- SELECCIONE UN ROL --</option>
+						    </select>
+						</div>
+					</div>
+					<!-- <div class="col-lg-12">
+						<div class="form-group">
+						    <label>
+								<strong>Permisos</strong>
+							</label>
+						</div>
+					</div> -->
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12 text-center">
+						<button class="btn btn-primary btn-lg" type="submit">
+                            Actualizar
+                        </button>
+						<button class="btn btn-secondary btn-lg" data-dismiss="modal">
+                            Cancelar
+                        </button>
+					</div>
+				</div>
+				</form>
+			</div>
+    	</div>
+  	</div>
+</div>

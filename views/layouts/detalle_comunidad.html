@@ -1,0 +1,462 @@
+<section class="tables" ng-init="moduloEditarPersona()">
+        <div class="">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+
+                         <div class="card-header d-flex align-items-center">
+                            <div class="col-lg-12">
+
+                                <ol class="breadcrumb" >
+                                    <li class="breadcrumb-item" ><a href="#/comunidades">Comunidades</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Detalles de Comunidad</li>
+                                  </ol>
+
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label>Comunidad</label>
+										<h1>{{ comunidad.NOMBRE }}</h1>
+									</div>
+								</div>
+							</div>
+
+                            <hr />
+
+                            <div class="row">
+
+								<div class="col-lg-12">
+									<ul class="nav nav-tabs" id="myTab" role="tablist">
+									  	<li class="nav-item">
+									    	<a style="cursor: pointer;" class="nav-link active" data-target="#integrantes" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">
+												Integrantes
+												<i class="fas fa-users"></i>
+											</a>
+									  	</li>
+										<li class="nav-item">
+									    	<a style="cursor: pointer;" class="nav-link" data-target="#roles" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">
+												Roles
+												<i class="fas fa-list-ul"></i>
+											</a>
+									  	</li>
+										<li class="nav-item">
+									    	<a style="cursor: pointer;" class="nav-link" data-target="#zonas" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">
+												Zonas
+												<i class="fas fa-map-marker-alt"></i>
+											</a>
+									  	</li>
+									</ul>
+									<br>
+								</div>
+
+								<br>
+								<div class="col-lg-12">
+									<div class="tab-content" id="myTabContent">
+
+										<div class="tab-pane fade show active" id="integrantes" role="tabpanel" aria-labelledby="mis-actividades-tab">
+											<div class="row md-4">
+
+												<div class="col-lg-6">
+
+												</div>
+
+												<div class="col-lg-6 offset-lg-6">
+		                                            <!-- <button ng-click="modalComunidades()" class="btn btn-primary pull-right">
+		                                                Agregar
+		                                                <i class="fas fa-plus"></i>
+		                                            </button> -->
+													<div class="input-group flex-nowrap pull-right text-right">
+
+													  	<input type="text" class="form-control" placeholder="Buscar persona..." aria-label="Username" aria-describedby="addon-wrapping">
+														<div class="input-group-prepend">
+													    	<span class="input-group-text" id="addon-wrapping">
+																<i class="fas fa-search"></i>
+															</span>
+													  	</div>
+													</div>
+		                                        </div>
+											</div>
+
+											<br>
+											<div class="row md-4" ng-show="integrantes.length > 0">
+												<div class="col-lg-12 md-4">
+													<table class="table table-sm">
+			                                            <thead>
+			                                                <tr>
+			                                                    <th style="width: 30%">Comunidad</th>
+																<th style="width: 30%">Rol</th>
+																<th style="width: 10%">Teléfono</th>
+																<th style="width: 20%">Email</th>
+			                                                    <th class="text-right" style="width: 10%">Acción</th>
+			                                                </tr>
+			                                            </thead>
+			                                            <tbody>
+			                                                <tr ng-repeat="integrante in integrantes">
+			                                                    <td>{{ integrante.NOMBRE }} {{ integrante.APELLIDO }}</td>
+																<td>{{ integrante.ROL }}</td>
+																<td>{{ integrante.TELEFONO }}</td>
+																<td>{{ integrante.EMAIL }}</td>
+			                                                    <td class="text-right">
+
+			                                                        <label ng-click="eliminarPersonaComunidad(comunidad.ID)" class="btn btn-danger btn-sm">
+			                                                            <i class="fas fa-trash-alt"></i>
+			                                                        </label>
+
+			                                                    </td>
+			                                                </tr>
+			                                            </tbody>
+			                                        </table>
+												</div>
+											</div>
+
+											<div class="col-md-12" ng-show="integrantes == 0">
+				                                <h1 class="text-center">
+				                                    No se encontraron registros
+				                                    <i class="fas fa-search"></i>
+				                                </h1>
+				                            </div>
+
+										</div>
+
+
+										<div class="tab-pane fade show" id="roles" role="tabpanel" aria-labelledby="roles-tab">
+											<div class="row md-4">
+
+												<div class="col-lg-12">
+		                                            <button ng-click="modalRolesAgregar()" class="btn btn-primary pull-left">
+		                                                Agregar Rol
+		                                                <i class="fas fa-plus"></i>
+		                                            </button>
+		                                        </div>
+											</div>
+
+											<br>
+
+											<div class="row md-4" ng-show="roles.length > 0">
+												<div class="col-lg-12 md-4">
+													<table class="table table-sm">
+			                                            <thead>
+			                                                <tr>
+			                                                    <th style="width: 45%">Rol</th>
+																<th style="width: 35%">Nivel</th>
+																<th class="text-left" style="width: 10%" >Oculto</th>
+			                                                    <th class="text-right" style="width: 10%">Acción</th>
+			                                                </tr>
+			                                            </thead>
+			                                            <tbody>
+			                                                <tr ng-repeat="rol in roles">
+			                                                    <td>{{ rol.NOMBRE }}</td>
+																<td>{{ rol.NIVEL }}</td>
+																<td class="text-left">
+																	<h3>
+																		<span ng-if="rol.OCULTO == 1" class="badge badge-danger">
+																			SI
+																		</span>
+																	</h3>
+
+																	<h3>
+																		<span ng-if="rol.OCULTO == 0" class="badge badge-primary">
+																			NO
+																		</span>
+																	</h3>
+																</td>
+			                                                    <td class="text-right">
+
+																	<button ng-click="modalEditarRol(rol.ID_ROL_COM)" class="btn btn-primary btn-sm" title="Editar Rol">
+			                                                            <i class="fas fa-edit"></i>
+			                                                        </button>
+
+			                                                        <button ng-click="eliminarRol(rol.ID_ROL_COM)" class="btn btn-danger btn-sm" title="Eliminar Rol">
+			                                                            <i class="fas fa-trash-alt"></i>
+			                                                        </button>
+			                                                    </td>
+			                                                </tr>
+			                                            </tbody>
+			                                        </table>
+												</div>
+											</div>
+
+											<div class="col-md-12" ng-show="roles.length == 0">
+				                                <h1 class="text-center">
+				                                    No se encontraron registros
+				                                    <i class="fas fa-search"></i>
+				                                </h1>
+				                            </div>
+
+										</div>
+
+										<div class="tab-pane fade show" id="zonas" role="tabpanel" aria-labelledby="zonas-tab">
+
+											<div class="row md-4">
+												<div class="col-lg-12">
+		                                            <button ng-click="modalAgregarZona()" class="btn btn-primary pull-left">
+		                                                Agregar Zona
+		                                                <i class="fas fa-plus"></i>
+		                                            </button>
+		                                        </div>
+											</div>
+
+											<br>
+
+											<div class="row md-4" ng-show="zonas_comunidad.length > 0">
+												<div class="col-lg-12 md-4">
+													<table class="table table-sm">
+														<thead>
+															<tr>
+																<th style="width: 90%">Zona</th>
+																<th style="width: 10%" class="text-right">Acción</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="zona in zonas_comunidad">
+																<td>Zona {{ zona.ZONA }}</td>
+																<td class="text-right">
+																	<button ng-click="eliminarZona(zona.ID_COMUNIDAD_ZONA)" class="btn btn-danger btn-sm" title="Eliminar Rol">
+			                                                            <i class="fas fa-trash-alt"></i>
+			                                                        </button>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+
+											<div class="col-md-12" ng-show="zonas_comunidad.length == 0">
+				                                <h1 class="text-center">
+				                                    No se encontraron registros
+				                                    <i class="fas fa-search"></i>
+				                                </h1>
+				                            </div>
+										</div>
+
+									</div>
+								</div>
+
+
+                                <div class="col-lg-6">
+
+                                    <div class="row mb-4">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!-- Modal para agregar rol a comunidad -->
+<div class="modal fade bd-example-modal-lg" id="modalRolesAgregar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-lg">
+    	<div class="modal-content">
+			<div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Agregar Rol</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          	<span aria-hidden="true">&times;</span>
+		        </button>
+      		</div>
+			<div class="modal-body">
+				<form ng-submit="agregarRoles()">
+				<div class="row">
+					<div class="col-lg-6">
+
+					</div>
+					<div class="col-lg-6">
+						<div class="input-group flex-nowrap">
+
+							<input ng-model="search" ng-change="filter()" type="text" class="form-control" placeholder="Buscar rol..." aria-label="Username" aria-describedby="addon-wrapping">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="addon-wrapping">
+									<i class="fas fa-search"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<!-- Tabla con Roles -->
+				<div class="row" ng-show="filter_data > 0">
+					<div class="col-lg-12">
+						<table class="table table-sm">
+							<thead>
+								<tr>
+									<th style="width: 90%">Rol</th>
+									<th style="width: 10%">Seleccionar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="rol in searched = (roles_disponibles | filter:search | orderBy : base :reverse) | beginning_data:(current_grid - 1) * data_limit | limitTo:data_limit">
+									<td>{{ rol.NOMBRE }}</td>
+									<td class="text-center">
+                                        <div class="form-check">
+                                            <input style="width: 25px; height: 25px;" class="form-check-input position-static" type="checkbox" checklist-model="agregar_roles.LISTA" checklist-value="rol.ID_ROL">
+                                        </div>
+                                    </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- Paginación -->
+				<div class="row" ng-show="filter_data > 0">
+
+					<div class="col-lg-4">
+						<label>
+							<strong>Mostrando {{ filter_data }} registros</strong>
+						</label>
+					</div>
+
+					<div class="col-lg-8">
+
+						<ul class="pull-right" uib-pagination boundary-links="true" items-per-page="data_limit" total-items="filter_data" ng-model="current_grid" ng-change="pageChanged()" first-text="Primera" last-text="Última" previous-text="&laquo;" next-text="&raquo;" num-pages="numPages" max-size="maxSize"></ul>
+
+					</div>
+					<br>
+				</div>
+
+				<div class="col-md-12" ng-show="filter_data == 0">
+					<h1 class="text-center">
+						No se encontraron registros
+						<i class="fas fa-search"></i>
+					</h1>
+					<br>
+				</div>
+				<hr>
+				<!-- Nivel y Botones de acción -->
+				<div class="row">
+					<br>
+					<div class="col-lg-6">
+						<div class="form-group">
+						    <label>
+								<strong>Nivel de Usuario</strong>
+							</label>
+						    <select ng-model="agregar_roles.NIVEL" ng-options="nivel.ID_NIVEL as nivel.DESCRIPCION for nivel in niveles" class="form-control" required>
+								<option value="">-- Seleccione un nivel --</option>
+						    </select>
+					  	</div>
+					</div>
+
+					<div class="col-lg-3 offset-lg-2">
+						<div class="form-group">
+						    <label>
+								<strong>Oculto</strong>
+							</label>
+							<br>
+							<input ng-value="agregar_roles.OCULTO" ng-model="agregar_roles.OCULTO" type="checkbox" id="toggle-one" data-toggle="toggle">
+					  	</div>
+					</div>
+
+					<div class="col-lg-12 text-center">
+						<br>
+						<button ng-disabled="agregar_roles.LISTA == ''" class="btn btn-primary btn-lg align-bottom" type="submit">
+                            Agregar Roles
+                        </button>
+						<button class="btn btn-secondary btn-lg" data-dismiss="modal">
+                            Cancelar
+                        </button>
+					</div>
+
+				</div>
+				<br>
+				</form>
+
+			</div>
+    	</div>
+  	</div>
+</div>
+
+<!-- Modal para editar un rol -->
+<div class="modal fade bd-example-modal-sm" id="modalEditarRol"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+	    <div class="modal-content">
+			<div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Editar Rol</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          	<span aria-hidden="true">&times;</span>
+		        </button>
+      		</div>
+			<div class="modal-body">
+				<form ng-submit="editarRol()">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>
+								<strong>Nivel de Usuario</strong>
+							</label>
+							<select ng-model="editar_rol.ID_NIVEL" ng-options="nivel.ID_NIVEL as nivel.DESCRIPCION for nivel in niveles" class="form-control" required>
+								<option value="">-- SELECCIONE UN NIVEL --</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>
+								<strong>Oculto</strong>
+							</label>
+							<br>
+							<input ng-value="agregar_roles.OCULTO" ng-model="agregar_roles.OCULTO" type="checkbox" id="toggle-two" data-toggle="toggle">
+						</div>
+					</div>
+
+					<div class="col-lg-12 text-center">
+						<br>
+						<button class="btn btn-primary btn-lg align-bottom" type="submit">
+							Actualizar
+						</button>
+						<button class="btn btn-secondary btn-lg" data-dismiss="modal">
+							Cancelar
+						</button>
+					</div>
+				</form>
+			</div>
+	    </div>
+  	</div>
+</div>
+
+<!-- Modal para agregar una zona -->
+<div class="modal fade bd-example-modal-sm" id="modalAgregarZona" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+
+			<div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Agregar Zona</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          	<span aria-hidden="true">&times;</span>
+		        </button>
+      		</div>
+
+			<div class="modal-body">
+				<form ng-submit="agregarZona()">
+					<div class="row">
+						<div class="col-lg-12">
+
+							<div class="form-group">
+							    <label>Zona</label>
+							    <select ng-model="zona_agregar.ZONA" ng-options="zona.ZONA as zona.ZONA for zona in zonas " class="form-control" required>
+									<option value="">-- SELECCIONE UNA ZONA --</option>
+							    </select>
+							</div>
+
+						</div>
+
+						<div class="col-lg-12 text-center">
+							<button type="submit" class="btn btn-lg btn-primary">
+								Agregar
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+	    </div>
+  	</div>
+</div>

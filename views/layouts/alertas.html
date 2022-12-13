@@ -1,0 +1,299 @@
+<section class="tables">
+	<div class="">
+		<div class="row">
+			<div class="col-lg-12">
+			    <div class="card">
+			        <div class="card-header d-flex align-items-center">
+
+			            <div class="col-lg-12">
+				            <ol class="breadcrumb">
+
+							    <li class="breadcrumb-item active" aria-current="page">Alertas</li>
+						  	</ol>
+					  	</div>
+
+			        </div>
+			        <div class="card-body">
+			        	<div class="row">
+			        		<div class="col-lg-4">
+			        			<div class="input-group mb-3">
+								  	<input type="text" class="form-control" placeholder="Buscar..." ng-model="search" ng-change="filter()">
+								  	<div class="input-group-prepend">
+									    <span class="input-group-text" id="basic-addon1">
+									    	<i class="fas fa-search"></i>
+									    </span>
+								  	</div>
+								</div>
+			        		</div>
+
+			        		<div class="col-lg-2 offset-lg-6">
+			        			<button class="btn btn-primary btn-block" ng-click="modalAddAlerta()">Agregar
+			        				<i class="fas fa-plus"></i>
+			        			</button>
+			        		</div>
+			        	</div>
+			        	<br>
+
+			        	<div class="row" ng-show="filter_data > 0">
+
+			        		<div class="col-lg-12">
+			        			<div class="table-responsive">
+						            <table class="table table-sm">
+						                <thead>
+						                    <tr>
+						                        <th style="width: 40%">
+						                        	Nombre
+						                        	&nbsp;<a href="" ng-click="sort_with('NOMBRE')" style="color: inherit;"><i class="fas fa-sort"></i></a>
+						                        </th>
+
+												<th style="width: 45%">
+						                        	Descripción
+						                        	&nbsp;<a href="" ng-click="sort_with('DESCRIPCION')" style="color: inherit;"><i class="fas fa-sort"></i></a>
+						                        </th>
+
+						                        <th style="width: 15%">Acción</th>
+						                    </tr>
+						                </thead>
+						                <tbody>
+						                    <tr ng-repeat="alerta in searched = (alertas | filter:search | orderBy : base :reverse) | beginning_data:(current_grid - 1) * data_limit | limitTo:data_limit">
+						                        <td>{{ alerta.NOMBRE }}</td>
+												<td>{{ alerta.DESCRIPCION }}</td>
+						                        <td>
+
+							                        <button class="btn btn-primary btn-sm" ng-click="modalEditAlerta(alerta.ID_ALERTA)" title="Editar">
+							                        	<i class="fas fa-edit"></i>
+							                        </button>
+
+							                        <button class="btn btn-danger btn-sm" ng-click="deleteAlerta(alerta.ID_ALERTA)" title="Eliminar">
+							                            <i class="fas fa-minus-circle"></i>
+							                        </button>
+
+													<button class="btn btn-default btn-sm" ng-click="alertarPersona(alerta.ID_ALERTA)" title="Simular Alerta">
+							                            <i class="fas fa-bell"></i>
+							                        </button>
+
+						                        </td>
+						                    </tr>
+						                </tbody>
+						            </table>
+			        			</div>
+			        		</div>
+
+			        	</div>
+
+			        	<div class="row" ng-show="filter_data > 0">
+
+			        		<div class="col-lg-6">
+
+			        			<ul uib-pagination boundary-links="true" items-per-page="data_limit" total-items="filter_data" ng-model="current_grid" ng-change="pageChanged()" first-text="Primera" last-text="Última" previous-text="&laquo;" next-text="&raquo;" num-pages="numPages" max-size="maxSize"></ul>
+
+			        		</div>
+
+			        	</div>
+
+			        	<div class="col-md-12" ng-show="filter_data == 0">
+							<h4 class="text-center">-- No se encontraron registros --</h4>
+						</div>
+
+			    	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Registrar Alerta -->
+<div class="modal fade" id="modalRegistrarAlerta" tabindex="-1" role="dialog" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Nueva Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<form ng-submit="addAlerta()">
+		    <div class="modal-body">
+		    	<div class="row">
+		    		<div class="col-lg-12">
+		    			<div class="form-group">
+						    <label>Nombre</label>
+						    <input id="nuevo_nombre_alerta" type="text" class="form-control" ng-model="alerta.NOMBRE" required>
+  						</div>
+		    		</div>
+					<div class="col-lg-12">
+		    			<div class="form-group">
+						    <label>Descripción</label>
+							<textarea rows="4" class="form-control" ng-model="alerta.DESCRIPCION"></textarea>
+  						</div>
+		    		</div>
+
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>Rol</label>
+							<select multiple data-selected-text-format="count" data-live-search="true" multiple data-actions-box="true" class="form-control selectpicker" placeholder="Seleccione uno o varios roles" ng-model="alerta.ID_ROL" id="select_roles_nueva_alerta" multiple required>
+								<option ng-repeat="rol in roles" ng-value="{{ rol.ID_ROL }}">{{ rol.NOMBRE }}</option>
+							</select>
+						</div>
+					</div>
+
+		    	</div>
+		    </div>
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		        <button type="submit" class="btn btn-primary">Guardar</button>
+	      	</div>
+	      	</form>
+	    </div>
+  	</div>
+</div>
+
+<div class="modal fade" id="modalEditarAlerta" tabindex="-1" role="dialog" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Editar Alerta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<form ng-submit="editAlerta()">
+		    <div class="modal-body">
+		    	<div class="row">
+		    		<div class="col-lg-12">
+		    			<div class="form-group">
+						    <label>Nombre</label>
+						    <input id="edit_nombre_alerta" type="text" class="form-control" ng-model="alerta_edit.NOMBRE" required>
+  						</div>
+		    		</div>
+					<div class="col-lg-12">
+		    			<div class="form-group">
+						    <label>Descripción</label>
+							<textarea rows="4" class="form-control" ng-model="alerta_edit.DESCRIPCION"></textarea>
+  						</div>
+		    		</div>
+
+		    		<!-- <div class="col-lg-12">
+		    			<div class="form-group">
+						    <label>Roles</label>
+							<select class="form-control roles" multiple="multiple" ng-model="alerta_edit.ID_ROL" placeholder="Seleccione uno o varios roles" id="select_edit_rol" required>
+								<option ng-repeat="rol in roles" ng-value="{{ rol.ID_ROL}}">{{ rol.NOMBRE }}</option>
+							</select>
+  						</div>
+		    		</div> -->
+
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>Rol</label>
+							<select multiple data-selected-text-format="count" data-live-search="true" multiple data-actions-box="true" class="form-control selectpicker" placeholder="Seleccione uno o varios roles" ng-model="alerta_edit.ID_ROL" id="select_roles_edit_alerta" multiple required>
+								<option ng-repeat="rol in roles" ng-value="{{ rol.ID_ROL }}">{{ rol.NOMBRE }}</option>
+							</select>
+						</div>
+					</div>
+
+		    	</div>
+		    </div>
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+		        <button type="submit" class="btn btn-primary">Guardar</button>
+	      	</div>
+	      	</form>
+	    </div>
+  	</div>
+</div>
+
+<!-- Modal para mostrar registros de personas que recibirian la alerta -->
+<div class="modal fade" id="modalSimularAlerta" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">{{ alerta_modal.NOMBRE }}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+			<div class="modal-body">
+				<div class="row mb-4">
+
+					<div class="col-lg-2">
+						<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+						    Roles
+						</button>
+					</div>
+
+					<div class="col-lg-4">
+						<button type="button" class="btn btn-danger" ng-click="enviarAlertas()">
+							Enviar Alerta
+							<i class="fas fa-bell"></i>
+						</button>
+					</div>
+
+					<div class="col-lg-6">
+						<input type="text" class="form-control" placeholder="Buscar persona" ng-model="search_personas_alertas" ng-change="filter_personas_alertas()">
+					</div>
+				</div>
+
+
+				<!-- Listado de roles -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="collapse" id="collapseExample">
+							<ul class="list-group">
+								<li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="rol_alerta in roles_alerta">
+							    	{{ rol_alerta.NOMBRE }}
+							    	<span class="badge badge-danger badge-pill">{{ rol_alerta.PERSONAS }}</span>
+							  	</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-lg-12" ng-show="filter_data_personas_alertas > 0">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Teléfono</th>
+									<th>Rol</th>
+									<th>Aplicación</th>
+									<th>Mensaje</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="persona_alerta in searched_personas_alertas = (personas_alerta | filter:search_personas_alertas | orderBy : base_alerta_protocolo :reverse_alerta_protocolo) | beginning_data:(current_grid_alerta_protocolo - 1) * data_limit_alerta_protocolo | limitTo:data_limit_alerta_protocolo">
+									<td title="{{ persona_alerta.TEXTO_MENSAJE }}">{{ persona_alerta.NOMBRE }}</td>
+									<td>{{ persona_alerta.TELEFONO }}</td>
+									<td>{{ persona_alerta.ROL }}</td>
+
+									<td class="table-success" ng-if="persona_alerta.ID_DISPOSITIVO != '1'">SI</td>
+									<td class="table-danger" ng-if="persona_alerta.ID_DISPOSITIVO == '1'">NO</td>
+
+									<td class="table-success" ng-if="persona_alerta.TEXTO_MENSAJE">SI</td>
+									<td class="table-danger" ng-if="!persona_alerta.TEXTO_MENSAJE">NO</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="col-lg-5" ng-show="filter_data_personas_alertas > 0">
+						No. de Registros {{ personas_alerta.length }}
+					</div>
+
+					<div class="col-lg-7 float-right" ng-show="filter_data_personas_alertas > 0">
+
+						<ul uib-pagination boundary-links="true" items-per-page="data_limit_alerta_protocolo" total-items="filter_data_personas_alertas" ng-model="current_grid_alerta_protocolo" ng-change="pageChanged()" first-text="Primera" last-text="Última" previous-text="&laquo;" next-text="&raquo;" num-pages="numPages" max-size="maxSize_alerta_protocolo"></ul>
+
+					</div>
+
+					<div class="col-md-12" ng-show="filter_data_personas_alertas == 0">
+						<h4 class="text-center">-- No se encontraron registros --</h4>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

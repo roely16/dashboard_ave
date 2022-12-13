@@ -1,0 +1,118 @@
+<div class="page">
+			<header class="header">
+				<nav class="navbar">
+					
+					<div class="container-fluid">
+						<div class="navbar-holder d-flex align-items-center justify-content-between">
+							<div class="navbar-header">
+								<a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+									<div class="brand-text d-none d-lg-inline-block">
+										<span>ADMINISTRACIÓN DE VULNERABILIDADES Y EMERGENCIAS </span><strong></strong>
+									</div>
+									<div class="brand-text d-none d-sm-inline-block d-lg-none">
+										<strong>BD</strong>
+									</div>
+								</a>
+								<a id="toggle-btn" href="#" class="menu-btn active">
+									<span></span>
+									<span></span>
+									<span></span>
+								</a>
+
+							</div>
+
+							<ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+
+								<li class="nav-item" ng-controller="loginController">
+									<a href="" class="nav-link logout" ng-click="cerrar_sesion()"> 
+										<span class="d-none d-sm-inline">Salir</span>
+										<i class="fas fa-sign-out-alt"></i>
+									</a>
+								</li>
+
+							</ul>
+
+						</div>
+					</div>
+				</nav>
+			</header>
+			<div class="page-content d-flex align-items-stretch">
+				<nav class="side-navbar">
+					<div class="sidebar-header d-flex align-items-center">
+						<div class="avatar">
+							<img src="public/img/dashboard/ave.png" alt="..." class="img-fluid rounded-circle">
+						</div>
+						<div class="title">
+							<h1 class="h4">AVE</h1>
+							<p>Administrador</p>
+						</div>
+					</div>
+					<ul class="list-unstyled">	
+						<li>
+							<a data-target="#administracionDropdown" aria-expanded="false" data-toggle="collapse">
+								<i class="icon-interface-windows"></i>Administración
+							</a>
+							<ul id="administracionDropdown" class="collapse list-unstyled ">
+								<li ng-class="{'active': $route.current.activetab == 'dependencias'}">
+									<a href="#/dependencias">
+										<i class="fas fa-building"></i>Dependencias
+									</a>
+								</li>
+								<li ng-class="{'active': $route.current.activetab == 'categorias'}">
+									<a href="#/categorias">
+										<i class="fas fa-tags"></i>Categorias
+									</a>
+								</li>
+								<li ng-class="{'active': $route.current.activetab == 'roles'}">
+									<a href="#/roles">
+										<i class="fas fa-tasks"></i>Roles
+									</a>
+								</li>
+								<li ng-class="{'active': $route.current.activetab == 'protocolos'}">
+									<a href="#/protocolos">
+										<i class="fas fa-list-ol"></i>Protocolos
+									</a>
+								</li>
+								<li ng-class="{'active': $route.current.activetab == 'albergues'}">
+									<a href="#/albergues">
+										<i class="fas fa-home"></i>Albergues
+									</a>
+								</li>	
+							</ul>
+						</li>
+							
+						<li>
+							<a data-target="#operacionDropdown" aria-expanded="false" data-toggle="collapse">
+								<i class="icon-interface-windows"></i>Operación
+							</a>
+							<ul id="operacionDropdown" class="collapse list-unstyled ">
+								<li ng-class="{'active': $route.current.activetab == 'comunidades'}">
+									<a href="#/comunidades"> <i class="fas fa-user-cog"></i>Comunidades </a>
+								</li>
+								<li ng-class="{'active': $route.current.activetab == 'personas'}">
+									<a href="#/personas"> <i class="fas fa-users"></i>Personas </a>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a data-target="#monitoreoDropdown" aria-expanded="false" data-toggle="collapse">
+								<i class="fas fa-tachometer-alt"></i>Monitoreo
+							</a>
+							<ul id="monitoreoDropdown" class="collapse list-unstyled ">
+								<li ng-class="{'active': $route.current.activetab == 'monitor_incidencias'}">
+									<a href="#/monitor_incidencias"> <i class="fas fa-battery-three-quarters"></i>Incidencias</a>
+								</li>
+								
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<div class="content-inner">
+					
+					<div class="container" ng-view>
+						
+					</div>
+				</div>
+			</div>
+		</div>
